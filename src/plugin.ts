@@ -35,6 +35,8 @@ export default class UbiquityPlugin {
     }
     if (this.options.useIdentity && !this.options.jwt) {
       clientOptions.identity.identityProvider = app.use(IdentityPlugin).forService('ubiquity');
+    } else if (this.options.jwt) {
+      clientOptions.identity.jwt = this.options.jwt;
     }
     const { APP_TOKEN, COMPANY_TOKEN } = await app.configuration('APP_TOKEN', 'COMPANY_TOKEN');
 
