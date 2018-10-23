@@ -28,8 +28,8 @@ const defaultOptions = {
 
 const pathMap: { [key: string]: string } = {
   registration: 'api/appusers/v1/{{appToken}}/register/',
-  getProfile: 'api/appusers/v1/{{appToken}}/get_profile/',
-  setProfile: 'api/appusers/v1/{{appToken}}/set_profile/',
+  getProfile: 'api/appusers/v1/{{appToken}}/profile/',
+  setProfile: 'api/appusers/v1/{{appToken}}/profile/set/',
   appConfig: 'c/{{companyToken}}/apps/{{appToken}}/app_users/{{appUserId}}/app_config.json',
   viewableIssues: 'c/{{companyToken}}/apps/{{appToken}}/app_users/{{appUserId}}/app_config.json',
 };
