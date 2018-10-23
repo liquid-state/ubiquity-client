@@ -21,7 +21,7 @@ interface IdentityOptions {
 }
 
 const defaultOptions = {
-  baseUrl: 'cloud.liquid-state.com/',
+  baseUrl: 'https://cloud.liquid-state.com/',
   baseS3Url: 'https://s3.ap-southeast-2.amazonaws.com/liquidstate-prod-apsoutheast2/',
   identity: {},
 };
