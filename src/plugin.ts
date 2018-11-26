@@ -4,8 +4,8 @@ import Ubiquity, { IOptions } from './client';
 
 
 export type DefaultConfig = {
-  useAls: false,
-  useIdentity: true,
+  useAls: boolean,
+  useIdentity: boolean,
 };
 export type Config = {
   baseUrl?: string
@@ -18,8 +18,9 @@ export type Config = {
 export default class UbiquityPlugin {
   static key = 'ubiquity';
 
-  static configure(customise: (conf: DefaultConfig) => Config) {
-    const options = customise({ useAls: false, useIdentity: true });
+  static configure(customise?: (conf: DefaultConfig) => Config) {
+    const defaultOptions = { useAls: false, useIdentity: true };
+    const options = customise ? customise(defaultOptions) : defaultOptions;
     return new UbiquityPlugin(options);
   }
 
@@ -38,8 +39,11 @@ export default class UbiquityPlugin {
     } else if (this.options.jwt) {
       clientOptions.identity.jwt = this.options.jwt;
     }
-    const { APP_TOKEN, COMPANY_TOKEN } = await app.configuration('APP_TOKEN', 'COMPANY_TOKEN');
+    const {
+      app_token: appToken,
+      company_token: companyToken
+    } = await app.configuration('app_token', 'company_token');
 
-    return new Ubiquity(COMPANY_TOKEN, APP_TOKEN, clientOptions);
+    return new Ubiquity(companyToken, appToken, clientOptions);
   }
 }
