@@ -6,6 +6,11 @@ interface IUbiquity {
   setProfile(profile: object, clearExistingProfile: boolean): Promise<void>;
   appConfiguration(): Promise<object>;
   appContent(useOldStyleDocumentMap: boolean): Promise<object>;
+  messageHistory(): Promise<MessageHistory>
+}
+
+type MessageHistory = {
+  messages: object[]
 }
 
 interface IOptions {
@@ -31,6 +36,7 @@ const pathMap: { [key: string]: string } = {
   getProfile: 'api/appusers/v1/{{appToken}}/profile/',
   setProfile: 'api/appusers/v1/{{appToken}}/profile/set/',
   appConfig: 'c/{{companyToken}}/apps/{{appToken}}/app_users/{{appUserId}}/app_config.json',
+  messageHistory: 'c/{{companyToken}}/apps/{{appToken}}/app_users/{{appUserId}}/messaging/list.json',
   viewableIssues: 'c/{{companyToken}}/apps/{{appToken}}/app_users/{{appUserId}}/app_config.json',
 };
 
@@ -123,6 +129,16 @@ class Ubiquity implements IUbiquity {
     }
     return data;
   };
+
+  messageHistory = async () => {
+    const sub = this.sub(await this.jwt());
+    const url = this.getUrl('messageHistory', true).replace('{{appUserId}}', sub);
+    const resp = await fetch(url);
+    if (!resp.ok) {
+      throw UbiquityError('Unable to retrieve the message history for the current user ', resp);
+    }
+    return resp.json();
+  }
 
   private getUrl(endpoint: string, useS3 = false) {
     let result;
