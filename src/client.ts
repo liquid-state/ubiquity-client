@@ -135,8 +135,8 @@ class Ubiquity implements IUbiquity {
     const url = this.getUrl('messageHistory', true).replace('{{appUserId}}', sub);
     const resp = await fetch(url);
     if (!resp.ok) {
-      if(resp.status === 403){
-        return [];
+      if(resp.status === 403) {
+        return { messages: [] };
       } else {
         throw UbiquityError('Unable to retrieve the message history for the current user ', resp);
       }
