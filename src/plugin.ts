@@ -41,9 +41,12 @@ export default class UbiquityPlugin {
     }
     const {
       app_token: appToken,
-      company_token: companyToken
-    } = await app.configuration('app_token', 'company_token');
-
+      company_token: companyToken,
+      UBIQUITY_BASE_URL: baseUrl,
+      UBIQUITY_BASE_S3_URL: baseS3Url
+    } = await app.configuration('app_token', 'company_token', 'UBIQUITY_BASE_URL', 'UBIQUITY_BASE_S3_URL');
+    clientOptions.baseUrl = clientOptions.baseUrl || baseUrl;
+    clientOptions.baseS3Url = clientOptions.baseS3Url || baseS3Url;
     return new Ubiquity(companyToken, appToken, clientOptions);
   }
 }
