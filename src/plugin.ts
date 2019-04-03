@@ -1,4 +1,4 @@
-import { App } from '@liquid-state/iwa-core';
+import { App, resolveSettings } from '@liquid-state/iwa-core';
 import IdentityPlugin from '@liquid-state/iwa-identity';
 import Ubiquity, { IOptions } from './client';
 
@@ -29,7 +29,7 @@ export default class UbiquityPlugin {
   private constructor(private options: Config) { };
 
   async use(app: App): Promise<Ubiquity> {
-    const clientOptions: IOptions = this.options;
+    const clientOptions: IOptions = await resolveSettings(app, this.options);
     clientOptions.identity = {};
     if (this.options.useAls) {
       clientOptions.als = await app.alsProvider.result();
