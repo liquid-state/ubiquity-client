@@ -53,6 +53,12 @@ class Ubiquity implements IUbiquity {
       this.options = defaultOptions;
     } else {
       this.options = { ...defaultOptions, ...options };
+      if (!this.options.baseUrl) {
+        this.options.baseUrl = defaultOptions.baseUrl;
+      }
+      if (!this.options.baseS3Url) {
+        this.options.baseS3Url = defaultOptions.baseS3Url;
+      }
     }
   }
 
