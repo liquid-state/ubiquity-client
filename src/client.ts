@@ -4,6 +4,7 @@ interface IUbiquity {
   register(username: string, password?: string): Promise<Response>;
   getProfile(): Promise<object>;
   setProfile(profile: object, clearExistingProfile: boolean): Promise<void>;
+  appPublicConfiguration(): Promise<object>;
   appConfiguration(): Promise<object>;
   appContent(useOldStyleDocumentMap: boolean): Promise<object>;
   messageHistory(): Promise<MessageHistory>;
