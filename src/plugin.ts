@@ -2,17 +2,16 @@ import { App } from '@liquid-state/iwa-core';
 import IdentityPlugin from '@liquid-state/iwa-identity';
 import Ubiquity, { IOptions } from './client';
 
-
 export type DefaultConfig = {
-  useAls: boolean,
-  useIdentity: boolean,
+  useAls: boolean;
+  useIdentity: boolean;
 };
 export type Config = {
-  baseUrl?: string
-  baseS3Url?: string,
-  useAls?: boolean,
-  jwt?: string,
-  useIdentity?: boolean,
+  baseUrl?: string;
+  baseS3Url?: string;
+  useAls?: boolean;
+  jwt?: string;
+  useIdentity?: boolean;
 };
 
 export default class UbiquityPlugin {
@@ -26,7 +25,7 @@ export default class UbiquityPlugin {
 
   public key = UbiquityPlugin.key;
 
-  private constructor(private options: Config) { };
+  private constructor(private options: Config) {}
 
   async use(app: App): Promise<Ubiquity> {
     const clientOptions: IOptions = this.options;
@@ -43,8 +42,13 @@ export default class UbiquityPlugin {
       app_token: appToken,
       company_token: companyToken,
       UBIQUITY_BASE_URL: baseUrl,
-      UBIQUITY_BASE_S3_URL: baseS3Url
-    } = await app.configuration('app_token', 'company_token', 'UBIQUITY_BASE_URL', 'UBIQUITY_BASE_S3_URL');
+      UBIQUITY_BASE_S3_URL: baseS3Url,
+    } = await app.configuration(
+      'app_token',
+      'company_token',
+      'UBIQUITY_BASE_URL',
+      'UBIQUITY_BASE_S3_URL'
+    );
     clientOptions.baseUrl = clientOptions.baseUrl || baseUrl;
     clientOptions.baseS3Url = clientOptions.baseS3Url || baseS3Url;
     return new Ubiquity(companyToken, appToken, clientOptions);
