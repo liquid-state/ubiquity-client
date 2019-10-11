@@ -4,14 +4,15 @@ interface IUbiquity {
   register(username: string, password?: string): Promise<Response>;
   getProfile(): Promise<object>;
   setProfile(profile: object, clearExistingProfile: boolean): Promise<void>;
+  appPublicConfiguration(): Promise<object>;
   appConfiguration(): Promise<object>;
   appContent(useOldStyleDocumentMap: boolean): Promise<object>;
-  messageHistory(): Promise<MessageHistory>
+  messageHistory(): Promise<MessageHistory>;
 }
 
 type MessageHistory = {
-  messages: object[]
-}
+  messages: object[];
+};
 
 interface IOptions {
   baseUrl?: string;
@@ -32,11 +33,13 @@ const defaultOptions = {
 };
 
 const pathMap: { [key: string]: string } = {
+  appPublicConfig: 'c/{{companyToken}}/apps/{{appToken}}/app.json',
   registration: 'api/appusers/v1/{{appToken}}/register/',
   getProfile: 'api/appusers/v1/{{appToken}}/profile/',
   setProfile: 'api/appusers/v1/{{appToken}}/profile/set/',
   appConfig: 'c/{{companyToken}}/apps/{{appToken}}/app_users/{{appUserId}}/app_config.json',
-  messageHistory: 'c/{{companyToken}}/apps/{{appToken}}/app_users/{{appUserId}}/messaging/list.json',
+  messageHistory:
+    'c/{{companyToken}}/apps/{{appToken}}/app_users/{{appUserId}}/messaging/list.json',
   viewableIssues: 'c/{{companyToken}}/apps/{{appToken}}/app_users/{{appUserId}}/app_config.json',
 };
 
@@ -105,6 +108,15 @@ class Ubiquity implements IUbiquity {
     }
   };
 
+  appPublicConfiguration = async () => {
+    const url = this.getUrl('appPublicConfig', true);
+    const resp = await fetch(url);
+    if (!resp.ok) {
+      throw UbiquityError('Unable to retrieve app public config', resp);
+    }
+    return resp.json();
+  };
+
   appConfiguration = async () => {
     const sub = this.sub(await this.jwt());
     const url = this.getUrl('appConfig', true).replace('{{appUserId}}', sub);
@@ -141,14 +153,14 @@ class Ubiquity implements IUbiquity {
     const url = this.getUrl('messageHistory', true).replace('{{appUserId}}', sub);
     const resp = await fetch(url);
     if (!resp.ok) {
-      if(resp.status === 403) {
+      if (resp.status === 403) {
         return { messages: [] };
       } else {
         throw UbiquityError('Unable to retrieve the message history for the current user ', resp);
       }
     }
     return resp.json();
-  }
+  };
 
   private getUrl(endpoint: string, useS3 = false) {
     let result;
