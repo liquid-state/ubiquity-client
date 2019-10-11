@@ -108,7 +108,7 @@ class Ubiquity implements IUbiquity {
   };
 
   appPublicConfiguration = async () => {
-    const url = this.getUrl('appConfig', true);
+    const url = this.getUrl('appPublicConfig', true);
     const resp = await fetch(url);
     if (!resp.ok) {
       throw UbiquityError('Unable to retrieve app public config', resp);
