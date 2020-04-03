@@ -1,5 +1,5 @@
-import Ubiquity, { IUbiquity, IOptions } from './client';
-import UbiquityAdminClient from './admin-client';
+import Ubiquity, { IUbiquity, IOptions } from "./client";
+import UbiquityAdminClient, { IUbiquityAdmin } from "./admin-client";
 
 export default Ubiquity;
-export { IUbiquity, IOptions, UbiquityAdminClient };
+export { IUbiquity, IOptions, UbiquityAdminClient, IUbiquityAdmin };

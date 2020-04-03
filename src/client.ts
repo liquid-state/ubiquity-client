@@ -43,7 +43,7 @@ const pathMap: { [key: string]: string } = {
   viewableIssues: 'c/{{companyToken}}/apps/{{appToken}}/app_users/{{appUserId}}/app_config.json',
 };
 
-const UbiquityError = (message: string, response: Response) => ({
+export const UbiquityError = (message: string, response: Response) => ({
   message: `Ubiquity API Error: ${message}`,
   response,
 });
