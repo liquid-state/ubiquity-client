@@ -172,7 +172,18 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
       'POST',
       body,
     );
-    return resp.json();
+
+    const respBody = await resp.json();
+
+    while (true) {
+      const versionInfo = await this.documentVersion(app, documentId, respBody.id);
+
+      if (versionInfo.is_ready) break;
+
+      await this.delay();
+    }
+
+    return respBody;
   };
 
   deleteDocument = async (app: Identifier, documentId: number) => {
@@ -199,6 +210,16 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
   documentVersions = async (app: Identifier, document: Identifier) => {
     const url = `api/core/v1/apps/${this.idFrom(app)}/documents/${this.idFrom(document)}/versions/`;
     return (await this.request(url)).json();
+  };
+
+  documentVersion = async (app: Identifier, document: Identifier, version: Identifier) => {
+    const resp = await this.request(
+      `api/core/v1/apps/${this.idFrom(app)}/documents/${this.idFrom(
+        document,
+      )}/versions/${this.idFrom(version)}/`,
+    );
+
+    return resp.json();
   };
 
   editDocument = async (
@@ -238,7 +259,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     const resp = await this.request(
       `api/core/v1/apps/${this.idFrom(
         app,
-      )}/documents/${documentId}/versions/${versionId}/configuration`,
+      )}/documents/${documentId}/versions/${versionId}/configuration/`,
       'POST',
       body,
     );
@@ -400,7 +421,6 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
       )}/documents/${documentId}/versions/${versionId}/imports/${importId}/`,
       'PATCH',
       'status=upload_acknowledged',
-      { 'Content-Type': 'application/x-www-form-url-encoded' },
     );
 
     return resp;
