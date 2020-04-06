@@ -68,10 +68,15 @@ type ID = number | string;
 type Identifier = ID | { id: number };
 
 interface ICreateVersion {
-  name: 'string';
-  description: 'string';
+  name: string;
+  description: string;
   creationMode?: string;
   createFromVersion?: string;
+}
+
+interface IEditVersion {
+  name?: string;
+  description?: string;
 }
 
 interface IGetDocumentVersionUploadUrl {
@@ -167,7 +172,18 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
       'POST',
       body,
     );
-    return resp.json();
+
+    const respBody = await resp.json();
+
+    while (true) {
+      const versionInfo = await this.documentVersion(app, documentId, respBody.id);
+
+      if (versionInfo.is_ready) break;
+
+      await this.delay();
+    }
+
+    return respBody;
   };
 
   deleteDocument = async (app: Identifier, documentId: number) => {
@@ -196,6 +212,16 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     return (await this.request(url)).json();
   };
 
+  documentVersion = async (app: Identifier, document: Identifier, version: Identifier) => {
+    const resp = await this.request(
+      `api/core/v1/apps/${this.idFrom(app)}/documents/${this.idFrom(
+        document,
+      )}/versions/${this.idFrom(version)}/`,
+    );
+
+    return resp.json();
+  };
+
   editDocument = async (
     app: Identifier,
     documentId: number,
@@ -215,6 +241,28 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     );
 
     return resp.json();
+  };
+
+  editDocumentVersion = async (
+    app: Identifier,
+    documentId: number,
+    versionId: number,
+    editData: IEditVersion,
+  ) => {
+    const body = new FormData();
+    if (editData.name) {
+      body.append('name', editData.name);
+    }
+    if (editData.description) {
+      body.append('description', editData.description);
+    }
+    const resp = await this.request(
+      `api/core/v1/apps/${this.idFrom(
+        app,
+      )}/documents/${documentId}/versions/${versionId}/configuration/`,
+      'POST',
+      body,
+    );
   };
 
   exportUploadDone = async (app: Identifier, importId: string) => {
@@ -353,7 +401,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
         break;
       }
 
-      await this.delay(2000);
+      await this.delay();
     }
 
     return { importSessionId, resp };
@@ -373,7 +421,6 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
       )}/documents/${documentId}/versions/${versionId}/imports/${importId}/`,
       'PATCH',
       'status=upload_acknowledged',
-      { 'Content-Type': 'application/x-www-form-url-encoded' },
     );
 
     return resp;
@@ -411,7 +458,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
           continue;
       }
 
-      await this.delay(2000);
+      await this.delay();
     }
   };
 
