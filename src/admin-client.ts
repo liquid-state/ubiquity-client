@@ -207,6 +207,14 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     return resp.json();
   };
 
+  documentPublishedStatus = async (app: Identifier, document: Identifier) => {
+    const resp = await this.request(
+      `/api/core/v1/apps/${this.idFrom(app)}/documents/${this.idFrom(document)}/channels/Public/`,
+    );
+
+    return resp.json();
+  };
+
   documentVersions = async (app: Identifier, document: Identifier) => {
     const url = `api/core/v1/apps/${this.idFrom(app)}/documents/${this.idFrom(document)}/versions/`;
     return (await this.request(url)).json();
