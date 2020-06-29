@@ -128,6 +128,10 @@ class Ubiquity implements IUbiquity {
   };
 
   appContent = async (useOldStyleDocumentMap = false) => {
+    const jwt = await this.jwt();
+    if (!jwt) {
+      return this.publicAppContent();
+    }
     const sub = this.sub(await this.jwt());
     const url = this.getUrl('viewableIssues', true).replace('{{appUserId}}', sub);
     const resp = await fetch(url);
@@ -161,6 +165,14 @@ class Ubiquity implements IUbiquity {
     }
     return resp.json();
   };
+
+  private publicAppContent = async () => {
+    const config = await this.appPublicConfiguration();
+    return {
+      categories: config.categories,
+      documents: config.iaps.ios,
+    }
+  }
 
   private getUrl(endpoint: string, useS3 = false) {
     let result;
