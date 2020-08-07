@@ -143,7 +143,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     // wait for initial document version to be created
     while (true) {
       const versionList = await this.documentVersions(app, responseBody.id);
-      if (versionList.length > 0) {
+      if (versionList.length > 0 && versionList[0].is_ready) {
         responseBody.latest_version = versionList[0];
         break;
       }
