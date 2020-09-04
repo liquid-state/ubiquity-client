@@ -382,6 +382,10 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     uploadUrlData: IGetDocumentVersionUploadUrl,
     file: File,
   ) => {
+    if (uploadUrlData.fileName.length > 30) {
+      uploadUrlData.fileName = uploadUrlData.fileName.slice(0, 30);
+    }
+
     const { importSessionId, uploadUrl } = await this.getDocumentUploadUrl(
       app,
       documentId,
