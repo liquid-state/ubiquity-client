@@ -383,7 +383,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     file: File,
   ) => {
     if (uploadUrlData.fileName.length > 30) {
-      uploadUrlData.fileName = uploadUrlData.fileName.slice(0, 30);
+      uploadUrlData.fileName = `${uploadUrlData.fileName.slice(0, 26)}.pdf`;
     }
 
     const { importSessionId, uploadUrl } = await this.getDocumentUploadUrl(
