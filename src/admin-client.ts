@@ -439,12 +439,15 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
   };
 
   publish = async (app: Identifier, documentId: number, versionId: number) => {
+    const initalPublishDetailsList = await this.publishingDetails(app, documentId);
+
     await this.publishDocument(app, documentId, versionId);
     let publishingDetails = null;
 
     while (!publishingDetails) {
       const publishingDetailsList = await this.publishingDetails(app, documentId);
-      if (publishingDetailsList.length) {
+
+      if (publishingDetailsList.length > initalPublishDetailsList.length) {
         publishingDetails = publishingDetailsList;
       }
       await this.delay();
