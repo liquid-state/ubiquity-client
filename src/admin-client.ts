@@ -126,11 +126,20 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     return resp.json();
   };
 
-  createDocument = async (app: Identifier, name: string, metadata?: IDocumentMetadata) => {
+  createDocument = async (
+    app: Identifier,
+    name: string,
+    metadata?: IDocumentMetadata,
+    ownerId?: string,
+  ) => {
     const body = new FormData();
     body.append('name', name);
     if (metadata) {
       body.append('metadata', JSON.stringify(metadata));
+    }
+
+    if (ownerId) {
+      body.append('owner_id', ownerId);
     }
 
     const resp = await this.request(
@@ -202,8 +211,17 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     return resp.json();
   };
 
-  documents = async (app: Identifier) => {
-    const resp = await this.request(`api/core/v1/apps/${this.idFrom(app)}/documents/`);
+  documents = async (app: Identifier, queryStringParameters?: { [key: string]: string }) => {
+    const resp = await this.request(
+      `api/core/v1/apps/${this.idFrom(app)}/documents/${
+        queryStringParameters
+          ? `?${Object.keys(queryStringParameters).reduce(
+              (queryString, key) => `${queryString}${key}=${queryStringParameters[key]}&`,
+              '',
+            )}`
+          : ''
+      }`,
+    );
     return resp.json();
   };
 
