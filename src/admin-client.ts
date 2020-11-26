@@ -12,6 +12,13 @@ export interface IUbiquityAdmin {
   deleteDocument(app: Identifier, documentId: number): Promise<any>;
   documents(app: Identifier): Promise<any>;
   documentVersions(app: Identifier, document: Identifier): Promise<any[]>;
+  editDocument(
+    app: Identifier,
+    documentId: number,
+    name: string,
+    metadata?: IDocumentMetadata,
+    ownerId?: string,
+  ): Promise<{ [key: string]: any }>;
   exportUploadDone(app: Identifier, importId: string): Promise<any>;
   pages(documentVersion: { links: { pages: string } }): Promise<any>;
   documentVersionUploadStatus(
@@ -253,11 +260,16 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     documentId: number,
     name: string,
     metadata?: IDocumentMetadata,
+    ownerId?: string,
   ) => {
     const body = new FormData();
     body.append('name', name);
     if (metadata) {
       body.append('metadata', JSON.stringify(metadata));
+    }
+
+    if (ownerId) {
+      body.append('owner_id', ownerId);
     }
 
     const resp = await this.request(
