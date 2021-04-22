@@ -5,6 +5,8 @@ import Ubiquity, { IOptions } from './client';
 export type DefaultConfig = {
   useAls: boolean;
   useIdentity: boolean;
+  appToken?: string;
+  companyToken?: string;
 };
 export type Config = {
   baseUrl?: string;
@@ -12,6 +14,8 @@ export type Config = {
   useAls?: boolean;
   jwt?: string;
   useIdentity?: boolean;
+  appToken?: string;
+  companyToken?: string;
 };
 
 export default class UbiquityPlugin {
@@ -47,10 +51,14 @@ export default class UbiquityPlugin {
       'app_token',
       'company_token',
       'UBIQUITY_BASE_URL',
-      'UBIQUITY_BASE_S3_URL'
+      'UBIQUITY_BASE_S3_URL',
     );
     clientOptions.baseUrl = clientOptions.baseUrl || baseUrl;
     clientOptions.baseS3Url = clientOptions.baseS3Url || baseS3Url;
-    return new Ubiquity(companyToken, appToken, clientOptions);
+    return new Ubiquity(
+      this.options.companyToken || companyToken,
+      this.options.appToken || appToken,
+      clientOptions,
+    );
   }
 }
