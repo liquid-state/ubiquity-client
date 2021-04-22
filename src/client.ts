@@ -37,6 +37,7 @@ const pathMap: { [key: string]: string } = {
   registration: 'api/appusers/v1/{{appToken}}/register/',
   getProfile: 'api/appusers/v1/{{appToken}}/profile/',
   setProfile: 'api/appusers/v1/{{appToken}}/profile/set/',
+  setDevice: 'api/appusers/v1/{{appToken}}/set_device/',
   appConfig: 'c/{{companyToken}}/apps/{{appToken}}/app_users/{{appUserId}}/app_config.json',
   messageHistory:
     'c/{{companyToken}}/apps/{{appToken}}/app_users/{{appUserId}}/messaging/list.json',
@@ -108,6 +109,24 @@ class Ubiquity implements IUbiquity {
     }
   };
 
+  setDevice = async (installationId: string) => {
+    const url = this.getUrl('setDevice');
+    const body = new FormData();
+    body.append('action', 'add');
+    body.append('installation_id', installationId);
+
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${await this.jwt()}`,
+      },
+      body,
+    });
+    if (!resp.ok) {
+      throw UbiquityError('Unable to update device', resp);
+    }
+  };
+
   appPublicConfiguration = async () => {
     const url = this.getUrl('appPublicConfig', true);
     const resp = await fetch(url);
@@ -171,8 +190,8 @@ class Ubiquity implements IUbiquity {
     return {
       categories: config.categories,
       documents: config.iaps.ios,
-    }
-  }
+    };
+  };
 
   private getUrl(endpoint: string, useS3 = false) {
     let result;
