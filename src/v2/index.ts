@@ -1,0 +1,1 @@
+export { default as AdminClient } from './admin-client';
