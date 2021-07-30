@@ -63,7 +63,7 @@ export default class ContentItemApi<T extends ContentItem, U extends ContentItem
     return this.executor.execute(url);
   };
 
-  public getVersion = (item: string | T, number: number): Promise<U> => {
+  public getVersion = (item: string | T, number: number | "latest"): Promise<U> => {
     const url = this.contentVersionUrl(number, item);
     return this.executor.execute(url);
   };
@@ -104,7 +104,7 @@ export default class ContentItemApi<T extends ContentItem, U extends ContentItem
     }
   };
 
-  private contentVersionUrl = (version: U | number, item?: string | T) => {
+  private contentVersionUrl = (version: U | number | "latest", item?: string | T) => {
     if (isContentVersion(version)) {
       return version.url;
     } else if (isContentItem(item)) {
