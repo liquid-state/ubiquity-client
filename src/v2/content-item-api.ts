@@ -14,7 +14,11 @@ export default class ContentItemApi<T extends ContentItem, U extends ContentItem
     private executor: RequestExecutor,
     private name: 'forms' | 'messages' | 'weblinks',
     private appOrToken: App | string,
-  ) {}
+  ) {
+    if (this.appOrToken === undefined) {
+      throw Error('App is undefined! Please specify the app you are accessing!')
+    }
+  }
 
   private get baseUrl() {
     return isApp(this.appOrToken)
@@ -22,8 +26,8 @@ export default class ContentItemApi<T extends ContentItem, U extends ContentItem
       : this.executor.url(`api/v2/apps/${this.appOrToken}/${this.name}/`);
   }
 
-  public list = (): Promise<APIList<T>> => {
-    return this.executor.execute(this.baseUrl);
+  public list = (nextPage?: string): Promise<APIList<T>> => {
+    return this.executor.execute(nextPage || this.baseUrl);
   };
 
   public get = (form: string): Promise<T> => {
@@ -58,8 +62,8 @@ export default class ContentItemApi<T extends ContentItem, U extends ContentItem
     return this.executor.execute(url, { headers: this.executor.headers(), method: 'POST' });
   };
 
-  public listVersions = (item: string | T): Promise<APIList<U>> => {
-    const url = `${this.contentItemUrl(item)}versions/`;
+  public listVersions = (item: string | T, nextPage?: string): Promise<APIList<U>> => {
+    const url = nextPage || `${this.contentItemUrl(item)}versions/`;
     return this.executor.execute(url);
   };
 
@@ -91,8 +95,8 @@ export default class ContentItemApi<T extends ContentItem, U extends ContentItem
     return this.executor.execute(url, { method: 'POST', headers: this.executor.headers() });
   };
 
-  listPublishingRecords = (item: string | T): Promise<APIList<PublishingRecord>> => {
-    const url = `${this.contentItemUrl(item)}publishing_records/`;
+  listPublishingRecords = (item: string | T, nextPage?: string): Promise<APIList<PublishingRecord>> => {
+    const url = nextPage || `${this.contentItemUrl(item)}publishing_records/`;
     return this.executor.execute(url);
   };
 
