@@ -1,4 +1,5 @@
 import { RequestExecutor } from './admin-client';
+import Paginator from './paginator';
 import {
   APIList,
   App,
@@ -26,6 +27,8 @@ export default class ContentItemApi<T extends ContentItem, U extends ContentItem
       : this.executor.url(`api/v2/apps/${this.appOrToken}/${this.name}/`);
   }
 
+  public pagination = () => new Paginator(this.executor);
+
   public list = (nextPage?: string): Promise<APIList<T>> => {
     return this.executor.execute(nextPage || this.baseUrl);
   };
@@ -51,6 +54,14 @@ export default class ContentItemApi<T extends ContentItem, U extends ContentItem
       body: JSON.stringify(data),
     });
   };
+
+  public delete = (item: string | T): Promise<void> => {
+    const url = this.contentItemUrl(item);
+    return this.executor.execute(url, {
+      method: 'DELETE',
+      headers: this.executor.headers(),
+    });
+  }
 
   public makeAvailable = (item: string | T): Promise<void> => {
     const url = `${this.contentItemUrl(item)}make_available/`;
