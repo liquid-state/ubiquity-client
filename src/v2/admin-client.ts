@@ -48,6 +48,9 @@ export class RequestExecutor {
       if (!r.ok) {
         throw new UbiquityError('Invalid request', r);
       }
+      if (r.status === 204) {
+        return;
+      }
       return r.json();
     } catch {
       throw new NetworkError('A network error has occurred, unable to contact ubiquity.');
