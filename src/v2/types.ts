@@ -43,7 +43,9 @@ export interface ContentItemData {
 
 export type Form = ContentItem;
 export type Message = ContentItem;
-export type Weblink = ContentItem;
+export type Weblink = ContentItem & {
+  type: "website" | "web_form"
+};
 
 export interface ContentItemVersion {
   url: Url,
