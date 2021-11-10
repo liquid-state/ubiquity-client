@@ -25,7 +25,8 @@
   },
   "homepage": "https://github.com/liquid-state/ubiquity-client#readme",
   "dependencies": {
-    "lodash-es": "^4.17.5"
+    "lodash-es": "^4.17.5",
+    "query-string": "^7.0.1"
   },
   "devDependencies": {
     "@liquid-state/iwa-core": "^1.6.1",

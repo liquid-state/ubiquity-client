@@ -1,3 +1,4 @@
+import { stringify } from 'query-string';
 import { APIList, App } from './types';
 
 interface IOptions {
@@ -29,8 +30,8 @@ export class RequestExecutor {
     return this.identity.apiKey ? `Token ${this.identity.apiKey}` : `Bearer ${this.identity.jwt}`;
   }
 
-  url(url: string) {
-    return `${this.options.baseUrl}${url}`;
+  url(url: string, query?: { [key: string]: string | number | boolean }) {
+    return `${this.options.baseUrl}${url}${query ? `?${stringify(query)}` : ''}`;
   }
 
   headers(additionalHeaders?: object) {
@@ -89,15 +90,29 @@ export default class UbiquityV2Client {
     return this.executor.execute(this.executor.url(`api/v2/apps/${token}/`));
   };
 
-  public getForm: (token: string, id: string) => Promise<any> = (token, id) => {
+  public getForm: (token: string, id: string, version?: number) => Promise<any> = (
+    token,
+    id,
+    version,
+  ) => {
     return this.executor.execute(
-      this.executor.url(`api/v2/apps/${token}/content-lookup/forms/${id}/`),
+      this.executor.url(
+        `api/v2/apps/${token}/content-lookup/forms/${id}/`,
+        version ? { version } : undefined,
+      ),
     );
   };
 
-  public getWeblink: (token: string, id: string) => Promise<any> = (token, id) => {
+  public getWeblink: (token: string, id: string, version?: number) => Promise<any> = (
+    token,
+    id,
+    version,
+  ) => {
     return this.executor.execute(
-      this.executor.url(`api/v2/apps/${token}/content-lookup/weblinks/${id}/`),
+      this.executor.url(
+        `api/v2/apps/${token}/content-lookup/weblinks/${id}/`,
+        version ? { version } : undefined,
+      ),
     );
   };
 }
