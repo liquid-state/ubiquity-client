@@ -1,7 +1,7 @@
 {
   "name": "@liquid-state/ubiquity-client",
   "type": "module",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Client library for Liquid State Ubiquity",
   "files": [
     "dist/"
