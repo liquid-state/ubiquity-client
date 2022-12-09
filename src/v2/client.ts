@@ -1,5 +1,5 @@
 import { stringify } from 'query-string';
-import { APIList, App } from './types';
+import { APIList, App } from './types.js';
 
 interface IOptions {
   baseUrl?: string;

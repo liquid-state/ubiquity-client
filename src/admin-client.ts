@@ -559,7 +559,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     return resp;
   };
 
-  private delay = async (ms = 200) => new Promise(resolve => setTimeout(() => resolve(), ms));
+  private delay = async (ms = 200) => new Promise<void>(resolve => setTimeout(() => resolve(), ms));
 
   private request = async (
     path: string,

@@ -1,5 +1,5 @@
-import { RequestExecutor } from "./admin-client";
-import { APIList } from "./types";
+import { RequestExecutor } from "./admin-client.js";
+import { APIList } from "./types.js";
 
 
 export default class Paginator<T = any> {

@@ -1,4 +1,4 @@
-import { App, ContentItem, ContentItemVersion } from "./types";
+import { App, ContentItem, ContentItemVersion } from "./types.js";
 
 export function isApp(a: any | App): a is App {
   return (a as App)?.token !== undefined;

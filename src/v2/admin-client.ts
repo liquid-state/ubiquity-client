@@ -1,4 +1,4 @@
-import ContentItemApi from './content-item-api';
+import ContentItemApi from './content-item-api.js';
 import { App, Form, APIList, Message, Weblink, FormVersion, MessageVersion, WeblinkVersion } from './types';
 
 interface IOptions {

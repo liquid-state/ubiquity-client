@@ -1,5 +1,5 @@
-import { RequestExecutor } from './admin-client';
-import Paginator from './paginator';
+import { RequestExecutor } from './admin-client.js';
+import Paginator from './paginator.js';
 import {
   APIList,
   App,
@@ -7,8 +7,8 @@ import {
   ContentItemData,
   ContentItemVersion,
   PublishingRecord,
-} from './types';
-import { isApp, isContentItem, isContentVersion } from './utils';
+} from './types.js';
+import { isApp, isContentItem, isContentVersion } from './utils.js';
 
 export default class ContentItemApi<T extends ContentItem, U extends ContentItemVersion> {
   constructor(
