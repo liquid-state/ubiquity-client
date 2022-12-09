@@ -1,6 +1,6 @@
 import { App } from '@liquid-state/iwa-core';
 import IdentityPlugin from '@liquid-state/iwa-identity';
-import Ubiquity, { IOptions } from './client';
+import Ubiquity, { IOptions } from './client.js';
 
 export type DefaultConfig = {
   useAls: boolean;

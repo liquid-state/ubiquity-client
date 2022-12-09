@@ -1,4 +1,4 @@
-import { UbiquityError } from './client';
+import { UbiquityError } from './client.js';
 export interface IUbiquityAdmin {
   addTagToDocument(app: Identifier, documentId: number, tag: string): Promise<any>;
   apps(): Promise<any>;

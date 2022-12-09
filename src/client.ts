@@ -1,4 +1,4 @@
-import { IIdentityProvider } from '@liquid-state/iwa-identity/dist/manager';
+import { IIdentityProvider } from '@liquid-state/iwa-identity/dist/manager.js';
 
 interface IUbiquity {
   register(username: string, password?: string): Promise<Response>;
