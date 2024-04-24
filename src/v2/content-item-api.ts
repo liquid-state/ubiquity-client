@@ -34,7 +34,7 @@ export default class ContentItemApi<T extends ContentItem, U extends ContentItem
   };
 
   public get = (form: string): Promise<T> => {
-    const url = `${this.baseUrl}/${form}/`;
+    const url = `${this.baseUrl}${form}/`;
     return this.executor.execute(url);
   };
 
