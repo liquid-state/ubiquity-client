@@ -12,6 +12,8 @@ export interface IUbiquityAdmin {
   deleteDocument(app: Identifier, documentId: number): Promise<any>;
   documents(app: Identifier): Promise<any>;
   documentVersions(app: Identifier, document: Identifier): Promise<any[]>;
+  documentVersion(app: Identifier, document: Identifier, version: Identifier): Promise<any>;
+  documentLatestVersionPublicDetails(app: Identifier, documentProductId: Identifier): Promise<any>;
   editDocument(
     app: Identifier,
     documentId: number,
@@ -250,6 +252,16 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
       `api/core/v1/apps/${this.idFrom(app)}/documents/${this.idFrom(
         document,
       )}/versions/${this.idFrom(version)}/`,
+    );
+
+    return resp.json();
+  };
+
+  documentLatestVersionPublicDetails = async (app: Identifier, documentProductId: Identifier) => {
+    const resp = await this.request(
+      `api/core/v1/apps/${this.idFrom(app)}/documents/${this.idFrom(
+        documentProductId,
+      )}/`,
     );
 
     return resp.json();
