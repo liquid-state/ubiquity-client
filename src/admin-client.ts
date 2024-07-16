@@ -323,8 +323,15 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     return resp.json();
   };
 
-  pages = async (documentVersion: { links: { pages: string } }) => {
-    return (await this.request(documentVersion.links.pages)).json();
+  pages = async (documentOrDocumentVersion: { links: { pages: string } } | { links: { page_list: string }}) => {
+    let url;
+
+    if ("pages" in documentOrDocumentVersion.links) {
+      url = documentOrDocumentVersion.links.pages;
+    } else {
+      url = documentOrDocumentVersion.links.page_list;
+    }
+    return (await this.request(url)).json();
   };
 
   appendOptionalFormData = async <T>(
