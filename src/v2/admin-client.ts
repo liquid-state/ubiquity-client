@@ -1,5 +1,14 @@
 import ContentItemApi from './content-item-api.js';
-import { App, Form, APIList, Message, Weblink, FormVersion, MessageVersion, WeblinkVersion } from './types';
+import {
+  App,
+  Form,
+  APIList,
+  Message,
+  Weblink,
+  FormVersion,
+  MessageVersion,
+  WeblinkVersion,
+} from './types';
 
 interface IOptions {
   baseUrl?: string;

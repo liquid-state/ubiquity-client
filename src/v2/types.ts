@@ -44,31 +44,31 @@ export interface ContentItemData {
 export type Form = ContentItem;
 export type Message = ContentItem;
 export type Weblink = ContentItem & {
-  type: "website" | "web_form"
+  type: 'website' | 'web_form';
 };
 
 export interface ContentItemVersion {
-  url: Url,
-  name: string,
-  number: number,
-  metadata: {[key: string]: any}
+  url: Url;
+  name: string;
+  number: number;
+  metadata: { [key: string]: any };
 }
 
 export type FormVersion = ContentItemVersion & {
-  schema: {[key: string]: any};
-  ui_schema: {[key: string]: any}
-}
+  schema: { [key: string]: any };
+  ui_schema: { [key: string]: any };
+};
 
 export type MessageVersion = ContentItemVersion & {
   title: string;
   body: string;
-  payload: {[key: string]: any}
-}
+  payload: { [key: string]: any };
+};
 
 export type WeblinkVersion = ContentItemVersion & {
   content_url: string;
-  type: "website" | "web_form"
-}
+  type: 'website' | 'web_form';
+};
 
 export interface PublishingRecord {
   url: Url;
@@ -88,27 +88,27 @@ interface ContentLookupBaseType {
 export type FormContentLookup = ContentLookupBaseType & {
   content: {
     number: number;
-    metadata: {[key: string]: any};
-    schema: {[key: string]: any};
-    ui_schema: {[key: string]: any};
-  }
-}
+    metadata: { [key: string]: any };
+    schema: { [key: string]: any };
+    ui_schema: { [key: string]: any };
+  };
+};
 
 export type MessageContentLookup = ContentLookupBaseType & {
   content: {
     number: number;
-    metadata: {[key: string]: any};
+    metadata: { [key: string]: any };
     title: string;
     body: string;
-    payload: {[key: string]: any};
-  }
-}
+    payload: { [key: string]: any };
+  };
+};
 
 export type WeblinkContentLookup = ContentLookupBaseType & {
   content: {
     number: number;
-    metadata: {[key: string]: any};
+    metadata: { [key: string]: any };
     content_url: string;
-    type: "website" | "web_form"
-  }
-}
+    type: 'website' | 'web_form';
+  };
+};

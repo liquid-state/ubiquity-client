@@ -7,7 +7,7 @@ export interface IUbiquityAdmin {
   createDocumentVersion(
     app: Identifier,
     documentId: number,
-    versionData: ICreateVersion,
+    versionData: ICreateVersion
   ): Promise<any>;
   deleteDocument(app: Identifier, documentId: number): Promise<any>;
   documents(app: Identifier): Promise<any>;
@@ -19,7 +19,7 @@ export interface IUbiquityAdmin {
     documentId: number,
     name: string,
     metadata?: IDocumentMetadata,
-    ownerId?: string,
+    ownerId?: string
   ): Promise<{ [key: string]: any }>;
   exportUploadDone(app: Identifier, importId: string): Promise<any>;
   pages(documentVersion: { links: { pages: string } }): Promise<any>;
@@ -27,26 +27,26 @@ export interface IUbiquityAdmin {
     app: Identifier,
     documentId: number,
     versionId: number,
-    importId: string,
+    importId: string
   ): Promise<any>;
   getDocumentUploadUrl(
     app: Identifier,
     documentId: number,
     versionId: number,
-    uploadUrlData: IGetDocumentVersionUploadUrl,
+    uploadUrlData: IGetDocumentVersionUploadUrl
   ): Promise<any>;
   removeTagFromDocument(app: Identifier, documentId: number, tag: string): Promise<any>;
   setDocumentAvailability(
     app: Identifier,
     documentId: number,
-    availability: 'free' | 'unavailable' | 'paid',
+    availability: 'free' | 'unavailable' | 'paid'
   ): Promise<any>;
   uploadDocumentVersion(
     app: Identifier,
     documentId: number,
     versionId: number,
     uploadUrlData: IGetDocumentVersionUploadUrl,
-    file: File,
+    file: File
   ): Promise<any>;
   publishingDetails(app: Identifier, documentId: number): Promise<any>;
 }
@@ -119,7 +119,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     const resp = await this.request(
       `api/core/v1/apps/${this.idFrom(app)}/documents/${documentId}/metadata/tags/add/`,
       'POST',
-      body,
+      body
     );
 
     return resp.json();
@@ -139,7 +139,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     app: Identifier,
     name: string,
     metadata?: IDocumentMetadata,
-    ownerId?: string,
+    ownerId?: string
   ) => {
     const body = new FormData();
     body.append('name', name);
@@ -154,7 +154,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     const resp = await this.request(
       `api/core/v1/apps/${this.idFrom(app)}/documents/`,
       'POST',
-      body,
+      body
     );
     const responseBody = await resp.json();
 
@@ -174,7 +174,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
   createDocumentVersion = async (
     app: Identifier,
     documentId: number,
-    versionData: ICreateVersion,
+    versionData: ICreateVersion
   ) => {
     const body = new FormData();
     body.append('name', versionData.name);
@@ -188,7 +188,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     const resp = await this.request(
       `api/core/v1/apps/${this.idFrom(app)}/documents/${documentId}/versions/`,
       'POST',
-      body,
+      body
     );
 
     const respBody = await resp.json();
@@ -207,14 +207,14 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
   deleteDocument = async (app: Identifier, documentId: number) => {
     const resp = await this.request(
       `api/core/v1/apps/${this.idFrom(app)}/documents/${documentId}/`,
-      'DELETE',
+      'DELETE'
     );
     return resp;
   };
 
   document = async (app: Identifier, documentId: number) => {
     const resp = await this.request(
-      `api/core/v1/apps/${this.idFrom(app)}/documents/${documentId}/`,
+      `api/core/v1/apps/${this.idFrom(app)}/documents/${documentId}/`
     );
 
     return resp.json();
@@ -226,32 +226,34 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
         queryStringParameters
           ? `?${Object.keys(queryStringParameters).reduce(
               (queryString, key) => `${queryString}${key}=${queryStringParameters[key]}&`,
-              '',
+              ''
             )}`
           : ''
-      }`,
+      }`
     );
     return resp.json();
   };
 
   documentPublishedStatus = async (app: Identifier, document: Identifier) => {
     const resp = await this.request(
-      `/api/core/v1/apps/${this.idFrom(app)}/documents/${this.idFrom(document)}/channels/Public/`,
+      `/api/core/v1/apps/${this.idFrom(app)}/documents/${this.idFrom(document)}/channels/Public/`
     );
 
     return resp.json();
   };
 
   documentVersions = async (app: Identifier, document: Identifier) => {
-    const url = `api/core/v1/apps/${this.idFrom(app)}/documents/${this.idFrom(document)}/versions/`;
+    const url = `api/core/v1/apps/${this.idFrom(app)}/documents/${this.idFrom(
+      document
+    )}/versions/`;
     return (await this.request(url)).json();
   };
 
   documentVersion = async (app: Identifier, document: Identifier, version: Identifier) => {
     const resp = await this.request(
       `api/core/v1/apps/${this.idFrom(app)}/documents/${this.idFrom(
-        document,
-      )}/versions/${this.idFrom(version)}/`,
+        document
+      )}/versions/${this.idFrom(version)}/`
     );
 
     return resp.json();
@@ -259,9 +261,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
 
   documentLatestVersionPublicDetails = async (app: Identifier, documentProductId: Identifier) => {
     const resp = await this.request(
-      `api/core/v1/apps/${this.idFrom(app)}/documents/${this.idFrom(
-        documentProductId,
-      )}/`,
+      `api/core/v1/apps/${this.idFrom(app)}/documents/${this.idFrom(documentProductId)}/`
     );
 
     return resp.json();
@@ -272,7 +272,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     documentId: number,
     name: string,
     metadata?: IDocumentMetadata,
-    ownerId?: string,
+    ownerId?: string
   ) => {
     const body = new FormData();
     body.append('name', name);
@@ -287,7 +287,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     const resp = await this.request(
       `api/core/v1/apps/${this.idFrom(app)}/documents/${documentId}/`,
       'POST',
-      body,
+      body
     );
 
     return resp.json();
@@ -297,7 +297,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     app: Identifier,
     documentId: number,
     versionId: number,
-    editData: IEditVersion,
+    editData: IEditVersion
   ) => {
     const body = new FormData();
     if (editData.name) {
@@ -308,25 +308,27 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     }
     const resp = await this.request(
       `api/core/v1/apps/${this.idFrom(
-        app,
+        app
       )}/documents/${documentId}/versions/${versionId}/configuration/`,
       'POST',
-      body,
+      body
     );
   };
 
   exportUploadDone = async (app: Identifier, importId: string) => {
     const resp = await this.request(
       `api/importing/v1/apps/${this.idFrom(app)}/isues/import/${importId}/status/`,
-      'POST',
+      'POST'
     );
     return resp.json();
   };
 
-  pages = async (documentOrDocumentVersion: { links: { pages: string } } | { links: { page_list: string }}) => {
+  pages = async (
+    documentOrDocumentVersion: { links: { pages: string } } | { links: { page_list: string } }
+  ) => {
     let url;
 
-    if ("pages" in documentOrDocumentVersion.links) {
+    if ('pages' in documentOrDocumentVersion.links) {
       url = documentOrDocumentVersion.links.pages;
     } else {
       url = documentOrDocumentVersion.links.page_list;
@@ -337,7 +339,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
   appendOptionalFormData = async <T>(
     obj: { [key: string]: any },
     optionalKeys: { objKey: string; formKey: string }[],
-    form = new FormData(),
+    form = new FormData()
   ) => {
     optionalKeys.forEach(({ objKey, formKey }) => {
       if (obj[objKey]) {
@@ -350,7 +352,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     app: Identifier,
     documentId: number,
     versionId: number,
-    uploadUrlData: IGetDocumentVersionUploadUrl,
+    uploadUrlData: IGetDocumentVersionUploadUrl
   ) => {
     const body = new FormData();
     body.append('import_file_name', uploadUrlData.fileName);
@@ -361,15 +363,15 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
         { objKey: 'importAtPosition', formKey: 'import_at_position' },
         { objKey: 'importType', formKey: 'import_type' },
       ],
-      body,
+      body
     );
 
     const resp = await this.request(
       `/api/importing/v1/apps/${this.idFrom(
-        app,
+        app
       )}/documents/${documentId}/versions/${versionId}/imports/`,
       'POST',
-      body,
+      body
     );
 
     const respBody = await resp.json();
@@ -402,7 +404,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     const resp = await this.request(
       `api/core/v1/apps/${this.idFrom(app)}/documents/${documentId}/metadata/tags/remove/`,
       'POST',
-      body,
+      body
     );
 
     return resp.json();
@@ -412,13 +414,13 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     app: Identifier,
     documentId: number,
     versionId: number,
-    importId: string,
+    importId: string
   ) => {
     const resp = await this.request(
       `api/importing/v1/apps/${this.idFrom(
-        app,
+        app
       )}/documents/${documentId}/versions/${versionId}/imports/${importId}/`,
-      'GET',
+      'GET'
     );
 
     return resp.json();
@@ -429,7 +431,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     documentId: number,
     versionId: number,
     uploadUrlData: IGetDocumentVersionUploadUrl,
-    file: File,
+    file: File
   ) => {
     if (uploadUrlData.fileName.length > 30) {
       uploadUrlData.fileName = `${uploadUrlData.fileName.slice(0, 26)}.pdf`;
@@ -439,7 +441,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
       app,
       documentId,
       versionId,
-      uploadUrlData,
+      uploadUrlData
     );
     const resp = await this.putDocument(uploadUrl, file);
 
@@ -447,7 +449,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
       app,
       documentId,
       versionId,
-      importSessionId,
+      importSessionId
     );
 
     while (true) {
@@ -455,7 +457,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
         app,
         documentId,
         versionId,
-        importSessionId,
+        importSessionId
       );
 
       if (statusResp.status === 'completed' || statusResp.status === 'failed') {
@@ -472,16 +474,16 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     app: Identifier,
     documentId: number,
     versionId: number,
-    importId: string,
+    importId: string
   ) => {
     const body = new FormData();
     body.append('status', 'upload_acknowledged');
     const resp = await this.request(
       `/api/importing/v1/apps/${this.idFrom(
-        app,
+        app
       )}/documents/${documentId}/versions/${versionId}/imports/${importId}/`,
       'PATCH',
-      'status=upload_acknowledged',
+      'status=upload_acknowledged'
     );
 
     return resp;
@@ -503,7 +505,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     }
 
     const { id: publishingRecord } = publishingDetails.find(
-      ({ version }: { [key: string]: any }) => version.id == `${versionId}`,
+      ({ version }: { [key: string]: any }) => version.id == `${versionId}`
     );
 
     let isPublishing = true;
@@ -529,8 +531,8 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
   publishingDetails = async (app: Identifier, documentId: number) => {
     const resp = await this.request(
       `/api/publishing/v1/apps/${this.idFrom(
-        app,
-      )}/documents/${documentId}/channels/Public/published/`,
+        app
+      )}/documents/${documentId}/channels/Public/published/`
     );
 
     return resp.json();
@@ -542,10 +544,10 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
 
     const resp = await this.request(
       `/api/publishing/v1/apps/${this.idFrom(
-        app,
+        app
       )}/documents/${documentId}/channels/Public/published/`,
       'POST',
-      body,
+      body
     );
 
     return resp;
@@ -554,8 +556,8 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
   publishingStatus = async (app: Identifier, documentId: number, publishingRecord: number) => {
     const resp = await this.request(
       `/api/publishing/v1/apps/${this.idFrom(
-        app,
-      )}/documents/${documentId}/channels/Public/published/${publishingRecord}/`,
+        app
+      )}/documents/${documentId}/channels/Public/published/${publishingRecord}/`
     );
 
     return resp.json();
@@ -564,7 +566,7 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
   setDocumentAvailability = async (
     app: Identifier,
     documentId: number,
-    availability: 'free' | 'unavailable' | 'paid',
+    availability: 'free' | 'unavailable' | 'paid'
   ) => {
     const body = new FormData();
     body.append('availability', availability);
@@ -572,19 +574,20 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
     const resp = await this.request(
       `/api/core/v1/apps/${this.idFrom(app)}/documents/${documentId}/channels/Public/`,
       'POST',
-      body,
+      body
     );
 
     return resp;
   };
 
-  private delay = async (ms = 200) => new Promise<void>(resolve => setTimeout(() => resolve(), ms));
+  private delay = async (ms = 200) =>
+    new Promise<void>(resolve => setTimeout(() => resolve(), ms));
 
   private request = async (
     path: string,
     method = 'GET',
     body?: FormData | string,
-    headers?: { [key: string]: any },
+    headers?: { [key: string]: any }
   ) => {
     const auth = this.identity.apiKey
       ? `Token ${this.identity.apiKey}`

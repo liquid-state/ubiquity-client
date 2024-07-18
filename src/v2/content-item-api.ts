@@ -14,10 +14,10 @@ export default class ContentItemApi<T extends ContentItem, U extends ContentItem
   constructor(
     private executor: RequestExecutor,
     private name: 'forms' | 'messages' | 'weblinks',
-    private appOrToken: App | string,
+    private appOrToken: App | string
   ) {
     if (this.appOrToken === undefined) {
-      throw Error('App is undefined! Please specify the app you are accessing!')
+      throw Error('App is undefined! Please specify the app you are accessing!');
     }
   }
 
@@ -61,7 +61,7 @@ export default class ContentItemApi<T extends ContentItem, U extends ContentItem
       method: 'DELETE',
       headers: this.executor.headers(),
     });
-  }
+  };
 
   public makeAvailable = (item: string | T): Promise<void> => {
     const url = `${this.contentItemUrl(item)}make_available/`;
@@ -78,7 +78,7 @@ export default class ContentItemApi<T extends ContentItem, U extends ContentItem
     return this.executor.execute(url);
   };
 
-  public getVersion = (item: string | T, number: number | "latest"): Promise<U> => {
+  public getVersion = (item: string | T, number: number | 'latest'): Promise<U> => {
     const url = this.contentVersionUrl(number, item);
     return this.executor.execute(url);
   };
@@ -106,7 +106,10 @@ export default class ContentItemApi<T extends ContentItem, U extends ContentItem
     return this.executor.execute(url, { method: 'POST', headers: this.executor.headers() });
   };
 
-  listPublishingRecords = (item: string | T, nextPage?: string): Promise<APIList<PublishingRecord>> => {
+  listPublishingRecords = (
+    item: string | T,
+    nextPage?: string
+  ): Promise<APIList<PublishingRecord>> => {
     const url = nextPage || `${this.contentItemUrl(item)}publishing_records/`;
     return this.executor.execute(url);
   };
@@ -119,7 +122,7 @@ export default class ContentItemApi<T extends ContentItem, U extends ContentItem
     }
   };
 
-  private contentVersionUrl = (version: U | number | "latest", item?: string | T) => {
+  private contentVersionUrl = (version: U | number | 'latest', item?: string | T) => {
     if (isContentVersion(version)) {
       return version.url;
     } else if (isContentItem(item)) {
