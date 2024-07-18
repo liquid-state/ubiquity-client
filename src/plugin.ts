@@ -51,14 +51,14 @@ export default class UbiquityPlugin {
       'app_token',
       'company_token',
       'UBIQUITY_BASE_URL',
-      'UBIQUITY_BASE_S3_URL',
+      'UBIQUITY_BASE_S3_URL'
     );
     clientOptions.baseUrl = clientOptions.baseUrl || baseUrl;
     clientOptions.baseS3Url = clientOptions.baseS3Url || baseS3Url;
     return new Ubiquity(
       this.options.companyToken || companyToken,
       this.options.appToken || appToken,
-      clientOptions,
+      clientOptions
     );
   }
 }

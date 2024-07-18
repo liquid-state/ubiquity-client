@@ -1,6 +1,5 @@
-import { RequestExecutor } from "./admin-client.js";
-import { APIList } from "./types.js";
-
+import { RequestExecutor } from './admin-client.js';
+import { APIList } from './types.js';
 
 export default class Paginator<T = any> {
   private queued?: Promise<APIList<any>> = undefined;
@@ -10,8 +9,8 @@ export default class Paginator<T = any> {
 
   begin = <U>(initial: Promise<APIList<U>>): Paginator<U> => {
     this.queued = initial;
-    return this as unknown as Paginator<U>;
-  }
+    return (this as unknown) as Paginator<U>;
+  };
 
   next = async (): Promise<T[] | null> => {
     let result;
@@ -25,9 +24,9 @@ export default class Paginator<T = any> {
     }
     this.previousResult = result;
     return result.results;
-  }
+  };
 
   hasNext = (): boolean => {
     return Boolean(this.queued || (this.previousResult && this.previousResult.next));
-  }
+  };
 }

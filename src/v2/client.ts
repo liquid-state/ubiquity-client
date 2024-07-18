@@ -93,26 +93,26 @@ export default class UbiquityV2Client {
   public getForm: (token: string, id: string, version?: number) => Promise<any> = (
     token,
     id,
-    version,
+    version
   ) => {
     return this.executor.execute(
       this.executor.url(
         `api/v2/apps/${token}/content-lookup/forms/${id}/`,
-        version ? { version } : undefined,
-      ),
+        version ? { version } : undefined
+      )
     );
   };
 
   public getWeblink: (token: string, id: string, version?: number) => Promise<any> = (
     token,
     id,
-    version,
+    version
   ) => {
     return this.executor.execute(
       this.executor.url(
         `api/v2/apps/${token}/content-lookup/weblinks/${id}/`,
-        version ? { version } : undefined,
-      ),
+        version ? { version } : undefined
+      )
     );
   };
 }
