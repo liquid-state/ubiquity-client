@@ -22,7 +22,9 @@ export interface IUbiquityAdmin {
     ownerId?: string
   ): Promise<{ [key: string]: any }>;
   exportUploadDone(app: Identifier, importId: string): Promise<any>;
-  pages(documentVersion: { links: { pages: string } }): Promise<any>;
+  pages(
+    documentOrDocumentVersion: { links: { pages: string } } | { links: { page_list: string } }
+  ): Promise<any>;
   documentVersionUploadStatus(
     app: Identifier,
     documentId: number,
