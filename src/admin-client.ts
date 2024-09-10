@@ -3,7 +3,7 @@ export interface IUbiquityAdmin {
   addTagToDocument(app: Identifier, documentId: number, tag: string): Promise<any>;
   apps(): Promise<any>;
   appDetails(app: Identifier): Promise<any>;
-  createDocument(app: Identifier, name: string): Promise<any>;
+  createDocument(app: Identifier, name: string, audienceType: string, metadata?: IDocumentMetadata, ownerId?: string): Promise<any>;
   createDocumentVersion(
     app: Identifier,
     documentId: number,
@@ -140,11 +140,13 @@ export default class UbiquityAdmin implements IUbiquityAdmin {
   createDocument = async (
     app: Identifier,
     name: string,
+    audienceType: string,
     metadata?: IDocumentMetadata,
     ownerId?: string
   ) => {
     const body = new FormData();
     body.append('name', name);
+    body.append('audience_type', audienceType);
     if (metadata) {
       body.append('metadata', JSON.stringify(metadata));
     }
