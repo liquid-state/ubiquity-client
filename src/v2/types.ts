@@ -33,6 +33,7 @@ export interface ContentItem {
   created: DateTime;
   modified: DateTime;
   is_available: boolean;
+  audience_type: string;
 }
 
 export interface ContentItemData {
